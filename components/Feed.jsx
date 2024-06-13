@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import PromptCard from "./PromptCard"
+export const dynamic = 'force-dynamic';
 
 const PromptCardList = ({data,handleTagClick})=>
     {
@@ -23,7 +24,7 @@ const Feed = () =>
     useEffect(()=>
         {
             const fetchPosts = async ()=>{
-                const res = await fetch('/api/prompt')
+                const res = await fetch('/api/prompt',{cache:'no-store'})
                 const data = await res.json()
 
                 setPosts(data)
