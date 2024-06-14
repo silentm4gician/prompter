@@ -20,7 +20,7 @@ const Feed = () => {
     const [posts, setPosts] = useState([])
 
     const fetchPosts = async () => {
-        const res = await fetch('/api/prompt', {cache:'reload'})
+        const res = await fetch('/api/prompt', {next:{revalidate:3600}})
         const data = await res.json()
 
         setPosts(data)
