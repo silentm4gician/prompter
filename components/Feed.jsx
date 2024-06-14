@@ -4,34 +4,31 @@ import { useEffect, useState } from "react"
 import PromptCard from "./PromptCard"
 export const dynamic = 'force-dynamic';
 
-const PromptCardList = ({data,handleTagClick})=>
-    {
-        return <div className="mt-16 prompt_layout">
-            {data.map((post)=>
+const PromptCardList = ({ data, handleTagClick }) => {
+    return <div className="mt-16 prompt_layout">
+        {data.map((post) =>
             <PromptCard
                 key={post._id}
                 post={post}
                 handleTagClick={handleTagClick}
             />)}
-        </div>
+    </div>
+}
+
+const Feed = () => {
+    const [search, setSearch] = useState('')
+    const [posts, setPosts] = useState([])
+
+    const fetchPosts = async () => {
+        const res = await fetch('/api/prompt', {cache:'reload'})
+        const data = await res.json()
+
+        setPosts(data)
     }
 
-const Feed = () => 
-{
-    const [search,setSearch] = useState('')
-    const [posts,setPosts] = useState([])
-    
-    useEffect(()=>
-        {
-            const fetchPosts = async ()=>{
-                const res = await fetch('/api/prompt',{cache:'no-store'})
-                const data = await res.json()
-
-                setPosts(data)
-            }
-
-            fetchPosts()
-        },[])
+    useEffect(() => {
+        fetchPosts()
+    }, [])
 
     return (
         <section className="feed">
@@ -42,13 +39,13 @@ const Feed = () =>
                     value={search}
                     required
                     className="search_input peer"
-                    onChange={(e)=>setSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
                 />
             </form>
 
-            <PromptCardList 
+            <PromptCardList
                 data={posts}
-                handleTagClick={()=>{}}
+                handleTagClick={() => { }}
             />
         </section>
     )
